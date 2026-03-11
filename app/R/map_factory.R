@@ -66,7 +66,7 @@ addLayersControlTree <- function(map, baseTree, overlayTree = NULL, options = li
       if (layer) mapInstance.removeLayer(layer);
     });
   }", baseTreeJSON, overlayTreeJSON, optionsJSON, hiddenLayersJSON)
-  leaflet::onRender(map %>% registerPlugin(layerTreePlugin), jsCode)
+  htmlwidgets::onRender(map %>% registerPlugin(layerTreePlugin), jsCode)
 }
 
 make_map <- function() {
