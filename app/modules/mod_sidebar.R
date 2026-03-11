@@ -1,0 +1,42 @@
+#' Sidebar module - form initialization and select inputs
+#' @import shiny shinyWidgets leaflet
+NULL
+
+mod_sidebar_server <- function(session, output, all_data, make_map) {
+  shinyWidgets::progressSweetAlert(session = session, id = "progress", title = 'semtitulo',
+                                  display_pct = TRUE, value = 0)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 1, total = 12, title = 'Carregando arquivo sqlite')
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 2, total = 12, title = 'Carregando valores do formulario')
+  grupos_proprietarios_all <- unique(all_data$grupo)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 3, total = 12, title = 'Carregando valores do formulario')
+  ufs <- unique(all_data$uf)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 4, total = 12, title = 'Carregando valores do formulario')
+  id_terras <- unique(all_data$id_terra)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 5, total = 12, title = 'Carregando valores do formulario')
+  municipios <- unique(all_data$municipio)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 6, total = 12, title = 'Carregando valores do formulario')
+  nomes_proprietarios <- unique(all_data$nome_proprietario)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 7, total = 12, title = 'Carregando valores do formulario')
+  documentos <- unique(all_data$documento)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 8, total = 12, title = 'Carregando valores do formulario')
+  codigos_imoveis <- unique(all_data$codigo_imovel)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 9, total = 12, title = 'Carregando valores do formulario')
+  nomes_fazendas <- unique(all_data$nome_area)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 10, total = 12, title = 'Carregando valores do formulario')
+  matriculas <- unique(all_data$matricula)
+  rm(all_data)
+  gc()
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 11, total = 12, title = 'Atualizando do formulario')
+  updateSelectizeInput(session, "Grupo_proprietario", choices = c('', grupos_proprietarios_all), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "Nome_proprietario", choices = c('', nomes_proprietarios), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "Documento_proprietario", choices = c('', documentos), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "UF", choices = c('', ufs), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "Municipio", choices = c('', municipios), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "Codigo_Imovel_Rural", choices = c('', codigos_imoveis), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "Nome_Fazenda", choices = c('', nomes_fazendas), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "Matricula", choices = c('', matriculas), selected = NULL, server = TRUE)
+  updateSelectizeInput(session, "ID_Terra", choices = c('', id_terras), selected = NULL, server = TRUE)
+  shinyWidgets::updateProgressBar(session = session, id = "progress", value = 12, total = 12, title = 'Carregando mapa')
+  output$mymap <- leaflet::renderLeaflet(make_map())
+  shinyWidgets::closeSweetAlert()
+}
